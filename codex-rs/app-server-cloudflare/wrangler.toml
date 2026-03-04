@@ -1,0 +1,16 @@
+name = "codex-app-server-cloudflare"
+main = "src/worker.ts"
+compatibility_date = "2026-02-20"
+compatibility_flags = ["nodejs_compat"]
+
+[build]
+command = "cargo build -p codex-app-server-platform --target wasm32-unknown-unknown --release && wasm-bindgen --target web --out-dir ./build/platform-wasm ../target/wasm32-unknown-unknown/release/codex_app_server_platform.wasm"
+
+[durable_objects]
+bindings = [
+  { name = "APP_SERVER_SESSION", class_name = "AppServerSession" },
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["AppServerSession"]
